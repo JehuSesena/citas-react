@@ -1,11 +1,18 @@
 import Header from "./components/Header"
 import ListadoPacientes from "./components/ListadoPacientes"
 import Form from "./components/Form"
-import { useState } from 'react' 
+import { useState, useEffect} from 'react' 
 function App() {
   //Aqui se definen los props que se pasan al form
-  const [ pacientes, setPacientes ] = useState([]);
-  const [ paciente, setPaciente] = useState({})
+  const INITIAL = JSON.parse(localStorage.getItem('pacientes')) ?? [];
+  const [ pacientes, setPacientes ] = useState(INITIAL);
+  const [ paciente, setPaciente] = useState({});
+
+
+  useEffect(()=>{
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
+  },[pacientes])
+
   const eliminarPaciente = (id) => {
     //retorno los pacientes que no coincidan con el id
     const pacientesActualizados = pacientes.filter(paciente => paciente.id !== id);
